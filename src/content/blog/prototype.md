@@ -7,11 +7,7 @@ category: 'Basic'
 tags: ['JavaScript']
 ---
 
-
-
 ## 从对象创建讲起
-
-
 
 ### 工厂模式
 
@@ -77,8 +73,6 @@ tags: ['JavaScript']
 
 问题在于父构造函数的属性同时出现在子类实例及子类原型对象上，只是由于调用顺序原型对象上的属性检索不需要使用
 
-
-
 ### 原型式继承
 
 Object.create()做的事情：
@@ -87,18 +81,18 @@ Object.create()做的事情：
 - 改了Conctructor，即定义了对象类型，如果用在继承上实际是导致Constructor指向错误
 
 ```javascript
-function object(o){
-    function F(){};
-    F.prototype = o;
-    return new F()
-};
-function Person(){
-    this.name = '人'
-};
-const person1 = new Person();
-console.log(person1); // Person {name:'人'}
-const person2 = object(Person.prototype);
-console.log(person2); // F {}
+function object(o) {
+	function F() {}
+	F.prototype = o
+	return new F()
+}
+function Person() {
+	this.name = '人'
+}
+const person1 = new Person()
+console.log(person1) // Person {name:'人'}
+const person2 = object(Person.prototype)
+console.log(person2) // F {}
 ```
 
 发生了类型丢失，object等价于Object.create()实际用于对象拷贝
@@ -121,42 +115,38 @@ console.log(person2); // F {}
 ```javascript
 // 父类
 function Animal(name) {
-  this.name = name;
+	this.name = name
 }
 
-Animal.prototype.sayName = function() {
-  console.log("My name is " + this.name);
-};
+Animal.prototype.sayName = function () {
+	console.log('My name is ' + this.name)
+}
 
 // 子类
 function Dog(name, breed) {
-  Animal.call(this, name);
-  this.breed = breed;
+	Animal.call(this, name)
+	this.breed = breed
 }
 
 // 创建一个继承自 Animal 的对象，并在原型上添加额外的方法
 function createDog(name, breed) {
-  var dog = Object.create(Animal.prototype);
-  dog.constructor = Dog;
-  dog.name = name;
-  dog.breed = breed;
+	var dog = Object.create(Animal.prototype)
+	dog.constructor = Dog
+	dog.name = name
+	dog.breed = breed
 
-  dog.bark = function() {
-    console.log("Woof!");
-  };
+	dog.bark = function () {
+		console.log('Woof!')
+	}
 
-  return dog;
+	return dog
 }
 
 // 创建一个 Dog 对象
-var myDog = createDog("Max", "Labrador");
-myDog.sayName(); // 输出: My name is Max
-myDog.bark(); // 输出: Woof!
+var myDog = createDog('Max', 'Labrador')
+myDog.sayName() // 输出: My name is Max
+myDog.bark() // 输出: Woof!
 ```
-
-
-
-
 
 ## 最后到ES6的类
 
@@ -183,19 +173,18 @@ myDog.bark(); // 输出: Woof!
 
 ```javascript
 function deepClone(obj) {
-  if (obj === null || typeof obj !== "object") {
-    return obj;
-  }
+	if (obj === null || typeof obj !== 'object') {
+		return obj
+	}
 
-  let clone = Array.isArray(obj) ? [] : {};
+	let clone = Array.isArray(obj) ? [] : {}
 
-  for (let key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      clone[key] = deepClone(obj[key]);
-    }
-  }
+	for (let key in obj) {
+		if (obj.hasOwnProperty(key)) {
+			clone[key] = deepClone(obj[key])
+		}
+	}
 
-  return clone;
+	return clone
 }
 ```
-
